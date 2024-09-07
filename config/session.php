@@ -77,7 +77,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Session Database Table
+    | Session Database ConcreteTable
     |--------------------------------------------------------------------------
     |
     | When using the "database" session driver, you may specify the table to
