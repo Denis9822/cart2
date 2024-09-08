@@ -10,11 +10,11 @@ class ConcreteProductFactory implements ProductFactory
 {
     public function createDoor(): AbstractDoor
     {
-        return new ConcreteDoor();
+        return new ConcreteDoor;
     }
 
     public function createTable(): AbstractTable
     {
-        return new ConcreteTable();
+        return new ConcreteTable;
     }
 }

@@ -2,9 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\Services\ConcreteProductFactory;
-use Illuminate\Console\Command;
 use App\Contracts\ProductFactory;
+use Illuminate\Console\Command;
 
 class ShowProduct extends Command
 {
@@ -21,8 +20,6 @@ class ShowProduct extends Command
      * @var string
      */
     protected $description = 'Command description';
-
-
 
     public function __construct(private readonly ProductFactory $factory)
     {

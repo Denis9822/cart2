@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Actions\UrlShorten;
-use Illuminate\Http\Request;
 use Random\RandomException;
 
 class ShortenController extends Controller
@@ -13,7 +12,7 @@ class ShortenController extends Controller
      */
     public function __invoke(): string
     {
-        $url = "https://translate.google.com";
+        $url = 'https://translate.google.com';
 
         $shortCode = UrlShorten::existUrl($url);
         if ($shortCode === false) {

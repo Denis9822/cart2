@@ -19,10 +19,11 @@ class UrlShorten
     {
         $existingUrl = UrlShortener::query()
             ->where('original_url', $url)->first();
-        if ($existingUrl)
+        if ($existingUrl) {
             return $existingUrl->short_url;
-        else
+        } else {
             return false;
+        }
     }
 
     public static function saveUrl(string $url, string $shortUrl): void
@@ -35,6 +36,6 @@ class UrlShorten
 
     public static function fullUrl(string $shortUrl): string
     {
-        return config('app.url') ."/". $shortUrl;
+        return config('app.url').'/'.$shortUrl;
     }
 }
