@@ -8,8 +8,10 @@ use App\Http\Requests\MigrationRequest;
 use App\Http\Resources\MigrationResource;
 use GuzzleHttp\Exception\InvalidArgumentException;
 use Illuminate\Database\Eloquent\JsonEncodingException;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class WizardStatsController extends Controller
 {
@@ -32,7 +34,7 @@ class WizardStatsController extends Controller
      * @throws JsonEncodingException
      * @throws InvalidArgumentException
      */
-    public function save()
+    public function save(): BinaryFileResponse
     {
         ini_set('max_execution_time', 0);
         ini_set('memory_limit', '1024M');
@@ -64,7 +66,7 @@ class WizardStatsController extends Controller
 
             $res = $sql->get();
 
-            if (! $res) {
+            if (!$res) {
                 break;
             }
             (new MigrationResource($res))->resolve();
@@ -91,7 +93,7 @@ class WizardStatsController extends Controller
 
     }
 
-    private function _getMigrationsQuery($count = false, $start = null, $limit = null, $allData = false)
+    private function _getMigrationsQuery($count = false, $start = null, $limit = null, $allData = false): Builder
     {
         $request = new MigrationRequest;
 
@@ -108,7 +110,7 @@ class WizardStatsController extends Controller
 
         $filterData = $this->_getFilterData(new FilterRequest);
 
-        $useIds = ! $count;
+        $useIds = !$count;
         foreach ($filterData as $filter) {
             if ($filter['field'] == 'migrationId') {
                 $useIds = false;
@@ -116,7 +118,7 @@ class WizardStatsController extends Controller
             }
         }
 
-        if (! $allData && $useIds) {
+        if (!$allData && $useIds) {
             $migrationsSelect = DB::table('migrations')
                 ->select('id')
                 ->orderByDesc('id')
@@ -170,11 +172,11 @@ class WizardStatsController extends Controller
             $select->skip($start)->limit($limit);
         }
 
-        if (! $count && is_array($useIds)) {
+        if (!$count && is_array($useIds)) {
             $select->whereIn('m.id', $useIds);
         }
 
-        if ($filterData || ! $count) {
+        if ($filterData || !$count) {
             $select->leftJoin('migrations_status_history AS mshd', function ($join) {
                 $join->on('m.id', '=', 'mshd.migration_id')
                     ->where('mshd.status', '=', 'demo_completed');
@@ -221,7 +223,7 @@ class WizardStatsController extends Controller
     /**
      * @throws InvalidArgumentException
      */
-    private function _getFilterData(FilterRequest $request)
+    private function _getFilterData(FilterRequest $request): array
     {
         $filters = json_decode($request->get('filter', ''), true);
 
